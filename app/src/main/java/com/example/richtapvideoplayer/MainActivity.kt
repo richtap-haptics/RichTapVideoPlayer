@@ -49,8 +49,8 @@ class MainActivity : AppCompatActivity() {
 
         // Prepare the video file and RichTap haptic file for playback
         // 准备素材：视频文件 + RichTap触感文件
-        srcMediaFile = Uri.parse("android.resource://$packageName/${R.raw.aceracer}")
-        srcHeFile = dumpAssetToDataStorage("aceracer.he")
+        srcMediaFile = Uri.parse("android.resource://$packageName/${R.raw.richlogo}")
+        srcHeFile = dumpAssetToDataStorage("richlogo.he")
 
         binding.videoView.apply {
             setVideoURI(srcMediaFile)
@@ -122,30 +122,31 @@ class MainActivity : AppCompatActivity() {
         binding.seekbarPlayRate.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { // Android 6.0
-                        binding.videoView.run {
-                            val previousPlaying = isPlaying
-                            // NOTE: changing the playback speed will automatically start the playback.
-                            // So we call pause() here when necessary after setting the new speed.
-                            // 注意: 在prepared状态下调整播放速度后会自动开播！
-                            // 因此，调整速度之后，如果之前不是播放状态，则需调用一次pause()
-                            playbackSpeed = (0.5 + 2.5 * progress / 100).toFloat()
-                            mediaPlayer?.let {
-                                it.playbackParams = it.playbackParams.setSpeed(playbackSpeed)
-                            }
-                            hapticPlayer.speed = playbackSpeed
-
-                            if (!previousPlaying) {
-                                pause()
-                            }
-                        }
-                    }
+                    val speed = (0.5 + 2.5 * progress / 100).toFloat()
+                    binding.tvPlayRate.text = "${speed}X"
                 }
             }
             override fun onStartTrackingTouch(seekBar: SeekBar) {
             }
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                Utils.showToast("Switched to ${playbackSpeed}X")
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { // Android 6.0
+                    binding.videoView.run {
+                        val previousPlaying = isPlaying
+                        // NOTE: changing the playback speed will automatically start the playback.
+                        // So we call pause() here when necessary after setting the new speed.
+                        // 注意: 在prepared状态下调整播放速度后会自动开播！
+                        // 因此，调整速度之后，如果之前不是播放状态，则需调用一次pause()
+                        playbackSpeed = (0.5 + 2.5 * seekBar.progress / 100).toFloat()
+                        mediaPlayer?.let {
+                            it.playbackParams = it.playbackParams.setSpeed(playbackSpeed)
+                        }
+                        hapticPlayer.speed = playbackSpeed
+
+                        if (!previousPlaying) {
+                            pause()
+                        }
+                    }
+                }
             }
         })
     }
@@ -156,6 +157,7 @@ class MainActivity : AppCompatActivity() {
         binding.seekbarPlayer.progress = 0
         binding.seekbarPlayRate.progress = 20 // speed = 1.0 by default
         binding.tvCurrent.text = Utils.stringForTime(0)
+        binding.tvPlayRate.text = "1.0X"
 
         try {
             binding.videoView.run {
