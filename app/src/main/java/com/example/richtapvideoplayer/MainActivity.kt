@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var srcMediaFile: Uri
     private lateinit var srcHeFile: File
 
-    private val seekBarUpdateTimer = Timer()
+    private val seekBarUpdateTimer = Timer(true)
     private var seekBarUpdateTask: TimerTask? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
