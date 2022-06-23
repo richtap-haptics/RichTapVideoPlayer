@@ -84,6 +84,7 @@ class MainActivity : AppCompatActivity() {
         // 停止播放当前的视频
         binding.btnStop.setOnClickListener {
             seekBarUpdateTask?.cancel()
+            seekBarUpdateTimer.purge() // removed all cancelled tasks
             // stop haptic player prior to media player to avoid accident callback
             // 注意顺序：先停止触感播放器，再停止媒体播放器
             hapticPlayer.stop()
