@@ -220,7 +220,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    inner class PlayerTimerTask() : TimerTask() {
+    inner class PlayerTimerTask : TimerTask() {
         override fun run() {
             updatePlaybackProgress()
         }
