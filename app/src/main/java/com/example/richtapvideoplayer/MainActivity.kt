@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                 hapticPlayer.start()
                 binding.btnStart.text = "Pause"
                 // Start a timer to update the playback progress-bar
-                seekBarUpdateTask = PlayerTimerTask(this)
+                seekBarUpdateTask = PlayerTimerTask()
                 seekBarUpdateTimer.schedule(seekBarUpdateTask, 0, 100)
             }
         }
@@ -220,9 +220,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    class PlayerTimerTask(private val mainAct: MainActivity) : TimerTask() {
+    inner class PlayerTimerTask() : TimerTask() {
         override fun run() {
-            mainAct.updatePlaybackProgress()
+            updatePlaybackProgress()
         }
     }
 
