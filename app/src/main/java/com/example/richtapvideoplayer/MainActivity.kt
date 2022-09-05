@@ -49,8 +49,8 @@ class MainActivity : AppCompatActivity() {
 
         // Prepare the video file and RichTap haptic file for playback
         // 准备素材：视频文件 + RichTap触感文件
-        srcMediaFile = Uri.parse("android.resource://$packageName/${R.raw.richlogo}")
-        srcHeFile = dumpAssetToDataStorage("richlogo.he")
+        srcMediaFile = Uri.parse("android.resource://$packageName/${R.raw.demo}")
+        srcHeFile = dumpAssetToDataStorage("demo.he")
 
         binding.videoView.apply {
             setVideoURI(srcMediaFile)
